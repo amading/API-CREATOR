@@ -1,0 +1,67 @@
+HAKBANG 1 — Kopyahin ang file na ito
+
+templates/GET-only/public-data.js
+I-paste sa iyong project bilang:
+
+
+routes/products-mobile.js   ← palitan ng angkop na pangalan
+HAKBANG 2 — Ito lang ang 4 na bagay na kailangan mong baguhin
+Buksan ang na-copy na file at hanapin ang bawat 👉:
+
+BAGO (public-data.js):
+
+
+// LINE 17-24 — Dummy data, palitan ng iyong data
+const faqs = [
+  { id: "1", question: "Ano...", answer: "Nag-aalok..." },
+];
+
+const announcements = [
+  { id: "1", title: "Bagong Update!", ... },
+];
+PALITAN NG GANITO (para sa products):
+
+
+// 👉 PALITAN: Ito ang iyong actual data / DB query
+const products = [
+  { id: "1", name: "Burger", price: 120, image: "burger.jpg", category: "food" },
+  { id: "2", name: "Pizza", price: 350, image: "pizza.jpg", category: "food" },
+];
+BAGO (route names):
+
+
+router.get("/faqs", ...)
+router.get("/announcements", ...)
+router.get("/stats", ...)
+PALITAN NG GANITO:
+
+
+router.get("/products", ...)       // GET lahat ng products
+router.get("/products/:id", ...)   // GET isang product
+router.get("/categories", ...)     // GET mga categories (optional)
+BAGO (sa server.js):
+
+
+app.use("/api/public", require("./routes/products-mobile"));
+PALITAN NG GANITO:
+
+
+// 👉 PALITAN NG IYONG BASE URL
+app.use("/api/mobile", require("./routes/products-mobile"));
+RESULTA — Ito na ang endpoint ng iyong mobile app:
+
+GET  http://localhost:3000/api/mobile/products       ← lahat ng products
+GET  http://localhost:3000/api/mobile/products/1     ← isang product lang
+GET  http://localhost:3000/api/mobile/categories     ← mga categories
+Kung kailangan ng LOGIN bago makita ang data (protected):
+Dagdagan lang ng verifyToken sa route:
+
+
+const { verifyToken } = require("../middleware/auth");
+
+// Walang login — public
+router.get("/products", (req, res) => { ... });
+
+// Kailangan ng login — private
+router.get("/my-orders", verifyToken, (req, res) => { ... });
+Para sa mobile app — public-data.js ang kopyahin. Dalawang bagay lang talaga ang palitan: ang data/variable names at ang route paths. Lahat ng error handling, response format, at rate limiting — nandoon na.
